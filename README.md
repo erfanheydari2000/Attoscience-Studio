@@ -47,7 +47,7 @@ Specialized in attosecond pulse generation and high harmonic generation (HHG) fr
   - Carrier envelope phase (CEP)
   - Temporal delays between pulses
   - Sine-square or Gaussian pulse envelopes
-- **Gate Width Optimization**: Calculate time-dependent ellipticity ε(t) for optimal gating
+- **Gate Width Optimization**: Calculate time-dependent ellipticity $\epsilon(t)$ for optimal gating
 
 ### High Harmonic Generation Analysis
 - **Time-Domain Total Current Visualization**: Monitor induced currents $\mathbf{J}(\vec{\mathbf{r}})$ during laser-matter interaction
