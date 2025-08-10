@@ -1,4 +1,3 @@
-
 # Attoscience Studio
 
 **Attoscience Studio** is a PyQt5-based scientific software suite designed for the interactive analysis and visualization of ultrafast light–matter interaction data, with a focus on attosecond pulse generation and high harmonic generation (HHG) from solid-state materials.
@@ -75,6 +74,24 @@ It integrates tools for analyzing TDDFT simulation results (e.g., from Octopus),
 - **Real-Time Parameter Feedback**: Immediate visualization of parameter changes
 - **Error Handling & Validation**: Robust input checking with helpful error messages
 ---
+
+## Screenshots
+
+| Main Window | Band Structure |
+|-------------|----------------|
+| ![](images/main_window.png) | ![](images/band_structure.png) |
+| *The main interface showing all tabs.* | *Band structure plotting from Octopus output.* |
+
+| Current Animation | Current Animation Dialog |
+|-------------------|--------------------------|
+| ![](images/curr_nex_anim.png) | ![](images/curr_nex_anim_dialog.png) |
+| *Visualization of electron current over time.* | *Settings dialog for current animation.* |
+
+| High Harmonic Dialog | Help Window |
+|----------------------|-------------|
+| ![](images/hhg_dialog.png) | ![](images/help.png) |
+| *Configuration window for HHG spectrum.* | *Help documentation for users.* |
+
 
 ## Installation
 
