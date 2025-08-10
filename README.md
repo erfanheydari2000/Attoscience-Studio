@@ -1,3 +1,4 @@
+
 # Attoscience Studio
 
 **Attoscience Studio** is a PyQt5-based scientific software suite designed for the interactive analysis and visualization of ultrafast light–matter interaction data, with a focus on attosecond pulse generation and high harmonic generation (HHG) from solid-state materials.
@@ -66,4 +67,7 @@ See `requirements.txt` for all dependencies.
 git clone https://github.com/erfan-h/attoscience_studio.git
 cd attoscience_studio
 pip install .
+
+# Attoscience-Studio
+A practical tool for simulating high harmonic generation and attosecond pulses, processing data from Octopus or Quantum ESPRESSO software.
 
