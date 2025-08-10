@@ -62,15 +62,15 @@ I_{HO, i}(n) = \left| \int_{\omega_i}^{\omega_f} e^{i \omega t} \, \mathrm{HHG}(
 - **Phase Analysis**: Extract phase information from harmonic components in radians and degrees
 - **Ellipticity Measurements**: Determine circular polarization characteristics of generated harmonics
 ```math
-\varepsilon = \frac{|a_{\text{right}}| - |a_{\text{left}}|}{|a_{\text{right}}| + |a_{\text{left}}|}
+\varepsilon = \frac{|a_{+}| - |a_{-}|}{|a_{+}| + |a_{-}|}
 \]
 
 where:
 \[
-a_{\text{right}} = \frac{1}{\sqrt{2}} (F_i + i F_j), \quad a_{\text{left}} = \frac{1}{\sqrt{2}} (F_i - i F_j)
+a_{+} = \frac{1}{\sqrt{2}} (F_i + i F_j), \quad a_{-} = \frac{1}{\sqrt{2}} (F_i - i F_j)
 \]
 
-and \( F_i \) and \( F_j \) are the Fourier components of the harmonic field.
+and \( F_i \), \( F_j \) are the Fourier components of the harmonic field.
 ```
 - **Cutoff Energy Predictions**: Identify maximum photon energies and plateau structures
 ### Attosecond Pulse Generation & Characterization
@@ -86,7 +86,6 @@ G(t, \omega) = \int j(\tau) , g(\tau - t) , e^{-i \omega \tau} , d\tau
 ```math
 g(t) = \exp\left(-\frac{t^2}{2\sigma^2}\right)
 ```
-
 ### Ultrafast Electron Dynamics
 - **Time-Resolved Excitation Tracking**: Monitor excited electron populations over optical cycles
 - **Brillouin Zone Mapping**: Visualize k-space distributions of excited electrons and currents
