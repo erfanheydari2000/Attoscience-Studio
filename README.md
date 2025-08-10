@@ -66,9 +66,15 @@ I_{HO, i}(n) = \left| \int_{\omega_i}^{\omega_f} e^{i \omega t} \, \mathrm{HHG}(
 ```math
 \varepsilon = \frac{|a_{+}| - |a_{-}|}{|a_{+}| + |a_{-}|}
 ```
-where ```math a_{+} = \frac{1}{\sqrt{2}} (F_i + i F_j), \quad a_{-} = \frac{1}{\sqrt{2}} (F_i - i F_j)```
-and ```math F_i and F_j```
+where 
+```math a_{+} = \frac{1}{\sqrt{2}} (F_i + i F_j), \quad a_{-} = \frac{1}{\sqrt{2}} (F_i - i F_j)
+```
+and 
+```math 
+F_i and F_j
+``` 
 are the Fourier components of the harmonic field.
+
 
 
 - **Cutoff Energy Predictions**: Identify maximum photon energies and plateau structures
