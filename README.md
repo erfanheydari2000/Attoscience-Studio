@@ -59,7 +59,7 @@ Specialized in attosecond pulse generation and high harmonic generation (HHG) fr
 ```math
 I_{HO, i}(n) = \left| \int_{\omega_i}^{\omega_f} e^{i \omega t} \, \mathrm{HHG}(\omega) \, d\omega \right|^2
 ```
-- **Phase Analysis**: Extract phase information from harmonic components in radians (arg($F_{i,j}$)) and degrees
+- **Phase Analysis**: Extract phase ($\Phi_{HO} = arg(F_{i,j})$) information from harmonic components in radians and degrees
 - **Ellipticity Measurements**: Determine circular polarization characteristics of generated harmonics
 ```math
 \varepsilon = \frac{|a_{+}| - |a_{-}|}{|a_{+}| + |a_{-}|},
