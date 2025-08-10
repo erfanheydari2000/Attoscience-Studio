@@ -1,19 +1,44 @@
 # Attoscience Studio
 
-**Attoscience Studio** is a PyQt5-based scientific software suite designed for the interactive analysis and visualization of ultrafast light–matter interaction data, with a focus on attosecond pulse generation and high harmonic generation (HHG) from solid-state materials.
+<div align="center">
 
-It integrates tools for analyzing TDDFT simulation results (e.g., from Octopus), visualizing pulse shapes and spectra, computing minimum pulse widths, and inspecting crystal structure data.
+![License](https://img.shields.io/badge/license-GPLv3-blue.svg)
+![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
+![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
+
+**A comprehensive PyQt5-based scientific software suite for ultrafast light–matter interaction analysis**
+
+Specialized in attosecond pulse generation and high harmonic generation (HHG) from solid-state materials
+
+[Installation](#installation) • [Features](#features) • [Screenshots](#screenshots) • [Documentation](#documentation) • [Contributing](#contributing)
+
+</div>
 
 ---
-# Features
 
-## Ground State Analysis
+## Overview
+
+**Attoscience Studio** is a powerful, interactive analysis and visualization platform designed for researchers working with ultrafast laser-matter interactions. The software seamlessly integrates with TDDFT simulation results (e.g., from Octopus) and provides comprehensive tools for:
+
+- **Electronic structure analysis** of crystalline materials
+- **Laser pulse configuration** and polarization gating design  
+- **High harmonic generation** spectral analysis
+- **Attosecond pulse synthesis** and characterization
+- **Ultrafast electron dynamics** visualization
+- **Advanced mathematical tools** for signal processing
+
+---
+
+## Features
+
+### Ground State Analysis
 - **Crystal Structure Visualization**: Examine atomic arrangements in crystal lattices
 - **Electronic Band Structure**: Analyze energy dispersion relations with automatic band gap calculation (direct/indirect)
 - **Density of States (DOS)**: Visualize electronic state distributions as a function of energy
 - **Electron Density Mapping**: Study spatial probability distributions of electrons in materials
 
-## Laser Field Configuration
+### Laser Field Configuration
 - **Single & Dual Pulse Setup**: Configure Ex, Ey, Ez components for complex field geometries
 - **Vector Potential Analysis**: Time-dependent gauge field calculations (E = -∂A/∂t)
 - **Polarization Gating**: Design isolated attosecond pulse generation schemes with precise control over:
@@ -24,7 +49,7 @@ It integrates tools for analyzing TDDFT simulation results (e.g., from Octopus),
   - Sine-square or Gaussian pulse envelopes
 - **Gate Width Optimization**: Calculate time-dependent ellipticity ε(t) for optimal gating
 
-## High Harmonic Generation Analysis
+### High Harmonic Generation Analysis
 - **Time-Domain Current Visualization**: Monitor induced currents (jx, jy, jz) during laser-matter interaction
 - **HHG Spectral Analysis**: Fourier transform analysis with both velocity and acceleration forms
 - **Harmonic Yield Calculations**: Quantify emission efficiency for specific harmonic orders
@@ -32,16 +57,14 @@ It integrates tools for analyzing TDDFT simulation results (e.g., from Octopus),
 - **Ellipticity Measurements**: Determine circular polarization characteristics of generated harmonics
 - **Cutoff Energy Predictions**: Identify maximum photon energies and plateau structures
 
-## Attosecond Pulse Generation & Characterization
+### Attosecond Pulse Generation & Characterization
 - **Dual-Method Pulse Synthesis**: 
   - Method 1: Direct Fourier transform of current components
   - Method 2: Derivative-based transform with frequency weighting
 - **Minimum Pulse Width (FWHM) Optimization**: Find shortest achievable pulse durations
 - **Gabor Transform Analysis**: Simultaneous time-frequency localization with Gaussian windowing
-- **Transform-Limited Pulse Design**: Optimize bandwidth-duration products
-- **Spectral Phase Control**: Analyze coherence requirements for pulse formation
 
-## Ultrafast Electron Dynamics
+### Ultrafast Electron Dynamics
 - **Time-Resolved Excitation Tracking**: Monitor excited electron populations over optical cycles
 - **Brillouin Zone Mapping**: Visualize k-space distributions of excited electrons and currents
 - **Real-Time Animations**: Generate smooth time-evolution movies with:
@@ -50,7 +73,7 @@ It integrates tools for analyzing TDDFT simulation results (e.g., from Octopus),
   - Export capabilities for presentations
 - **Preferential Direction Analysis**: Identify anisotropic excitation patterns
 
-## Mathematical Toolbox
+### Mathematical Toolbox
 - **Fourier Transform Suite**: 
   - Function-based transforms with user-defined expressions
   - Data file processing with cubic interpolation
@@ -62,47 +85,188 @@ It integrates tools for analyzing TDDFT simulation results (e.g., from Octopus),
   - Electric fields (V/m ↔ a.u.)
   - Length (meters ↔ Bohr radius)
 
-## Advanced Integration
+### Advanced Integration
 - **Embedded IPython Console**: Full Python scripting environment for custom analysis
 - **Flexible File Format Support**: Compatible with standard TD-DFT output formats
 - **High-Performance Visualization**: Matplotlib integration with publication-ready plots
 - **Memory-Efficient Processing**: Optimized algorithms for large dataset handling
 
-## User Experience
+### User Experience
 - **Intuitive Tabbed Interface**: Organized workflow from ground state to attosecond analysis
 - **Comprehensive Help System**: Built-in documentation with examples and best practices
 - **Real-Time Parameter Feedback**: Immediate visualization of parameter changes
 - **Error Handling & Validation**: Robust input checking with helpful error messages
+
 ---
 
 ## Screenshots
 
-| Main Window | Band Structure |
-|-------------|----------------|
-| ![](images/main_window.png) | ![](images/band_structure.png) |
-| *The main interface showing all tabs.* | *Band structure plotting from Octopus output.* |
+<div align="center">
 
-| Current Animation | Current Animation Dialog |
-|-------------------|--------------------------|
-| ![](images/curr_nex_anim.png) | ![](images/curr_nex_anim_dialog.png) |
-| *Visualization of electron current over time.* | *Settings dialog for current animation.* |
+| Main Interface | Band Structure Analysis |
+|:-------------:|:----------------------:|
+| ![Main Window](images/main_window.png) | ![Band Structure](images/band_structure.png) |
+| *Complete tabbed interface for comprehensive analysis* | *Electronic band structure with automatic gap detection* |
 
-| High Harmonic Dialog | Help Window |
-|----------------------|-------------|
-| ![](images/hhg_dialog.png) | ![](images/help.png) |
-| *Configuration window for HHG spectrum.* | *Help documentation for users.* |
+| Electron Dynamics | Animation Controls |
+|:----------------:|:------------------:|
+| ![Current Animation](images/curr_nex_anim.png) | ![Animation Dialog](images/curr_nex_anim_dialog.png) |
+| *Real-time visualization of electron current evolution* | *Customizable animation settings and export options* |
 
+| HHG Spectral Analysis | Integrated Help System |
+|:--------------------:|:----------------------:|
+| ![HHG Dialog](images/hhg_dialog.png) | ![Help Window](images/help.png) |
+| *High harmonic generation spectrum configuration* | *Comprehensive built-in documentation* |
+
+</div>
+
+---
 
 ## Installation
 
-### Requirements
+### System Requirements
 
-Python 3.8+  
-See `requirements.txt` for all dependencies.
+- **Operating System**: Linux (recommended)
+- **Python Version**: 3.8 or higher
+- **Memory**: 4GB RAM minimum, 8GB+ recommended
+- **Storage**: 1GB free space
+- **Graphics**: OpenGL support for visualizations
 
-### From Source (Recommended)
+### Quick Installation
+
+#### Option 1: From Source (Recommended)
 
 ```bash
+# Clone the repository
 git clone https://github.com/erfan-h/attoscience_studio.git
 cd attoscience_studio
+
+# Install dependencies and the package
 pip install .
+```
+
+#### Option 2: Development Installation
+
+```bash
+# For developers who want to modify the code
+git clone https://github.com/erfan-h/attoscience_studio.git
+cd attoscience_studio
+pip install -e .
+```
+
+### Dependencies
+
+All required dependencies are listed in `requirements.txt` and will be automatically installed:
+
+- PyQt5 (GUI framework)
+- NumPy & SciPy (numerical computing)
+- Matplotlib (plotting and visualization)
+- IPython (interactive console)
+
+### Verification
+
+After installation, verify everything works correctly:
+
+```bash
+# Launch the application
+attoscience-studio
+
+# Or run from Python
+python -m attoscience_studio
+```
+
+---
+
+## Documentation
+
+### Getting Started
+
+1. **Load Your Data**: Start with ground state analysis using your TD-DFT output files
+2. **Configure Laser Fields**: Set up driving pulses and polarization gating parameters
+3. **Analyze HHG**: Generate and study high harmonic spectra
+4. **Generate Attosecond Pulses**: Synthesize and optimize ultrashort pulses
+5. **Visualize Dynamics**: Create animations of electron motion in k-space
+
+### Supported File Formats
+
+- **Crystal Structure**: parser.log file generated by Octopus and conventional standard CIF
+- **Band Structure**: Standard Octopus output format 'bandstructure'
+- **Density of States**: Energy-resolved DOS data 
+- **Electron Density**: Standard Octopus output format 'density.x=0' or 'density.y=0' or 'density.z=0'
+- **Laser Data**: Electric field and vector potential files ('laser' file generated by Octopus)
+- **Total current data**: High harmonic generation and attosecond pulses ('total_current' file generated by Octopus)
+- **Current Data**: Momentum-resolved current components ('current_kpt-x.kz=0')
+- **Number of Excited Electrons Data**: Momentum-resolved nex ('n_excited_el_kpt.kz=0')
+
+### Built-in Help
+
+Attoscience Studio includes comprehensive help documentation accessible through the interface, covering:
+
+- Step-by-step tutorials for each analysis type
+- File format specifications
+- Parameter explanations and best practices
+- Troubleshooting guide
+
+---
+
+## Contributing
+
+We welcome contributions from the scientific community! Here's how you can help:
+
+### Ways to Contribute
+
+-  **Report Bugs**: Open an issue with detailed reproduction steps
+-  **Suggest Features**: Propose new analysis tools or improvements
+-  **Improve Documentation**: Help make our docs clearer and more comprehensive
+-  **Submit Code**: Fix bugs or implement new features
+
+### Development Setup
+
+```bash
+# Fork the repository on GitHub
+git clone https://github.com/YOUR_USERNAME/attoscience_studio.git
+cd attoscience_studio
+
+# Create a development environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install in development mode
+pip install -e ".[dev]"
+```
+
+### Coding Standards
+
+- Follow PEP 8 style guidelines
+- Include docstrings for all functions and classes
+- Add unit tests for new features
+- Update documentation for user-facing changes
+
+---
+
+## License
+
+This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## Acknowledgments
+
+This software builds upon research computational physics. We acknowledge the contributions of:
+
+- Developers of Octopus
+
+---
+
+## Contact & Support
+
+- **Issues & Bug Reports**: [GitHub Issues](https://github.com/erfanheydari2000/Attoscience-Studio/issues)
+- **Feature Requests**: [GitHub Discussions](https://github.com/erfanheydari2000/Attoscience-Studio/discussions)
+- **Email**: <erfan.heydari@modares.ac.ir>
+
+
+---
+
+<div align="center">
+
+</div>
