@@ -50,7 +50,7 @@ Specialized in attosecond pulse generation and high harmonic generation (HHG) fr
 - **Gate Width Optimization**: Calculate time-dependent ellipticity ε(t) for optimal gating
 
 ### High Harmonic Generation Analysis
-- **Time-Domain Total Current Visualization**: Monitor induced currents J($\vec{r}$) during laser-matter interaction
+- **Time-Domain Total Current Visualization**: Monitor induced currents $\mathbf{J}(\vec{\mathbf{r}})$ during laser-matter interaction
 - **HHG Spectral Analysis**: Fourier transform analysis with both velocity and acceleration forms
 ```math
 \mathrm{HHG}(\omega) = \left| \mathcal{F} \left( \frac{\partial}{\partial t} \int_{\Omega} d^3r \, \mathbf{J}(\mathbf{r}, t) \right) \right|^2
