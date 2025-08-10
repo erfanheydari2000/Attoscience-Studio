@@ -61,17 +61,18 @@ I_{HO, i}(n) = \left| \int_{\omega_i}^{\omega_f} e^{i \omega t} \, \mathrm{HHG}(
 ```
 - **Phase Analysis**: Extract phase information from harmonic components in radians and degrees
 - **Ellipticity Measurements**: Determine circular polarization characteristics of generated harmonics
-```math
-\varepsilon = \frac{|a_{+}| - |a_{-}|}{|a_{+}| + |a_{-}|}
-\]
-
-where:
-\[
-a_{+} = \frac{1}{\sqrt{2}} (F_i + i F_j), \quad a_{-} = \frac{1}{\sqrt{2}} (F_i - i F_j)
-\]
-
-and \( F_i \), \( F_j \) are the Fourier components of the harmonic field.
-```
+The ellipticity is defined as:  
+$$
+\varepsilon = \frac{|a_+| - |a_-|}{|a_+| + |a_-|}
+$$  
+where:  
+$$
+a_+ = \frac{1}{\sqrt{2}} (F_i + i F_j)
+$$  
+$$
+a_- = \frac{1}{\sqrt{2}} (F_i - i F_j)
+$$  
+and $F_i$, $F_j$ are the Fourier components of the harmonic field.
 - **Cutoff Energy Predictions**: Identify maximum photon energies and plateau structures
 ### Attosecond Pulse Generation & Characterization
 - **Attosecond Pulse Intensity**:  
