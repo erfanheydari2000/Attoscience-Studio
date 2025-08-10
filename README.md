@@ -52,10 +52,9 @@ Specialized in attosecond pulse generation and high harmonic generation (HHG) fr
 ### High Harmonic Generation Analysis
 - **Time-Domain Total Current Visualization**: Monitor induced currents (jx, jy, jz) during laser-matter interaction
 - **HHG Spectral Analysis**: Fourier transform analysis with both velocity and acceleration forms
-  \[
+  ```math
   \mathrm{HHG}(\omega) = \left| \mathcal{F} \left( \frac{\partial}{\partial t} \int_{\Omega} d^3r \, \mathbf{J}(\mathbf{r}, t) \right) \right|^2
-  \]
-  where \(\mathcal{F}\) denotes the Fourier transform of the time-derivative of the current density integrated over volume \(\Omega\).
+  ```
 - **Harmonic Yield Calculations**: Quantify emission efficiency for specific harmonic orders
 - **Phase Analysis**: Extract phase information from harmonic components in radians and degrees
 - **Ellipticity Measurements**: Determine circular polarization characteristics of generated harmonics
