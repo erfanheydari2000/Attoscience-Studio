@@ -39,7 +39,7 @@ Specialized in attosecond pulse generation and high harmonic generation (HHG) fr
 - **Electron Density Mapping**: Study spatial probability distributions of electrons in materials
 
 ### Laser Field Configuration
-- **Single & Dual Pulse Setup**: Configure Ex, Ey, Ez components for complex field geometries
+- **Single & Dual Pulse Setup**: Configure $E_x$, $E_y$, $E_z$ components for complex field geometries
 - **Vector Potential Analysis**: Time-dependent gauge field calculations (E = -∂A/∂t)
 - **Polarization Gating**: Design isolated attosecond pulse generation schemes with precise control over:
   - Laser wavelength, intensity, and optical cycles
@@ -50,7 +50,7 @@ Specialized in attosecond pulse generation and high harmonic generation (HHG) fr
 - **Gate Width Optimization**: Calculate time-dependent ellipticity ε(t) for optimal gating
 
 ### High Harmonic Generation Analysis
-- **Time-Domain Total Current Visualization**: Monitor induced currents (jx, jy, jz) during laser-matter interaction
+- **Time-Domain Total Current Visualization**: Monitor induced currents J($\vec{r}$) during laser-matter interaction
 - **HHG Spectral Analysis**: Fourier transform analysis with both velocity and acceleration forms
 ```math
 \mathrm{HHG}(\omega) = \left| \mathcal{F} \left( \frac{\partial}{\partial t} \int_{\Omega} d^3r \, \mathbf{J}(\mathbf{r}, t) \right) \right|^2
@@ -59,7 +59,7 @@ Specialized in attosecond pulse generation and high harmonic generation (HHG) fr
 ```math
 I_{HO, i}(n) = \left| \int_{\omega_i}^{\omega_f} e^{i \omega t} \, \mathrm{HHG}(\omega) \, d\omega \right|^2
 ```
-- **Phase Analysis**: Extract phase information from harmonic components in radians and degrees
+- **Phase Analysis**: Extract phase information from harmonic components in radians (arg($F_{i,j}$)) and degrees
 - **Ellipticity Measurements**: Determine circular polarization characteristics of generated harmonics
 ```math
 \varepsilon = \frac{|a_{+}| - |a_{-}|}{|a_{+}| + |a_{-}|},
