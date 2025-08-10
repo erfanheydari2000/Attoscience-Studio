@@ -19,14 +19,14 @@ Specialized in attosecond pulse generation and high harmonic generation (HHG) fr
 
 ## Overview
 
-**Attoscience Studio** is a powerful, interactive analysis and visualization platform designed for researchers working with ultrafast laser-matter interactions. The software seamlessly integrates with TDDFT simulation results (e.g., from Octopus) and provides comprehensive tools for:
+**Attoscience Studio** is a interactive analysis and visualization platform designed for researchers working with ultrafast laser-matter interactions. The software seamlessly integrates with TDDFT simulation results (e.g., from Octopus) and provides tools for:
 
 - **Electronic structure analysis** of crystalline materials
 - **Laser pulse configuration** and polarization gating design  
 - **High harmonic generation** spectral analysis
 - **Attosecond pulse synthesis** and characterization
 - **Ultrafast electron dynamics** visualization
-- **Advanced mathematical tools** for signal processing
+- **Mathematical tools** for signal processing
 
 ---
 
@@ -50,19 +50,26 @@ Specialized in attosecond pulse generation and high harmonic generation (HHG) fr
 - **Gate Width Optimization**: Calculate time-dependent ellipticity ε(t) for optimal gating
 
 ### High Harmonic Generation Analysis
-- **Time-Domain Current Visualization**: Monitor induced currents (jx, jy, jz) during laser-matter interaction
+- **Time-Domain Total Current Visualization**: Monitor induced currents (jx, jy, jz) during laser-matter interaction
 - **HHG Spectral Analysis**: Fourier transform analysis with both velocity and acceleration forms
+  \[
+  \mathrm{HHG}(\omega) = \left| \mathcal{F} \left( \frac{\partial}{\partial t} \int_{\Omega} d^3r \, \mathbf{J}(\mathbf{r}, t) \right) \right|^2
+  \]
+  where \(\mathcal{F}\) denotes the Fourier transform of the time-derivative of the current density integrated over volume \(\Omega\).
 - **Harmonic Yield Calculations**: Quantify emission efficiency for specific harmonic orders
 - **Phase Analysis**: Extract phase information from harmonic components in radians and degrees
 - **Ellipticity Measurements**: Determine circular polarization characteristics of generated harmonics
 - **Cutoff Energy Predictions**: Identify maximum photon energies and plateau structures
 
 ### Attosecond Pulse Generation & Characterization
-- **Dual-Method Pulse Synthesis**: 
-  - Method 1: Direct Fourier transform of current components
-  - Method 2: Derivative-based transform with frequency weighting
+- **Attosecond Pulse Intensity**:  
+  \[
+  I(t) = \left| \int_{\omega_i}^{\omega_f} e^{i \omega t} \, \mathrm{HHG}(\omega) \, d\omega \right|^2
+  \]
+  representing the inverse Fourier synthesis of harmonics in the selected frequency range \([\omega_i, \omega_f]\).
+  
 - **Minimum Pulse Width (FWHM) Optimization**: Find shortest achievable pulse durations
-- **Gabor Transform Analysis**: Simultaneous time-frequency localization with Gaussian windowing
+- **Gabor Transform Analysis**: G(t, ω) = ∫ j(τ) × g(τ - t) × e^(-iωτ) dτ, where g(t) = exp(-t² / 2σ²)
 
 ### Ultrafast Electron Dynamics
 - **Time-Resolved Excitation Tracking**: Monitor excited electron populations over optical cycles
