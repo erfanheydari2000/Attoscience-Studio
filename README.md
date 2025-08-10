@@ -126,7 +126,7 @@ g(t) = \exp\left(-\frac{t^2}{2\sigma^2}\right)
 | Electron Dynamics | Animation Controls |
 |:----------------:|:------------------:|
 | ![Current Animation](images/curr_nex_anim.png) | ![Animation Dialog](images/curr_nex_anim_dialog.png) |
-| *Real-time visualization of electron current evolution* | *Customizable animation settings and export options* |
+| *Real-time visualization of nex-current evolution* | *Customizable animation settings and export options* |
 
 | HHG Spectral Analysis | Integrated Help System |
 |:--------------------:|:----------------------:|
