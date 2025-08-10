@@ -1,0 +1,637 @@
+# electron_dynamics/nex.py
+
+# Copyright (C) 2024-2025 Erfan Heydari
+#
+# This file is part of the Attoscience Studio.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+import os, sys
+import math
+import time
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+from matplotlib import gridspec
+#import matplotlib
+#matplotlib.use("Qt5Agg")
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QFileDialog, QDialog, QFormLayout, QProgressBar, QStyle,
+                             QRadioButton, QButtonGroup, QScrollArea, QColorDialog, QLineEdit, QMessageBox,
+                             QPushButton, QVBoxLayout, QHBoxLayout, QGroupBox, QGridLayout, QSplashScreen, QDoubleSpinBox,
+                             QMenu, QLabel, QWidget, QSpinBox, QDoubleSpinBox, QFrame, QComboBox, QCheckBox, QDialogButtonBox,
+                             QTabWidget, QTextEdit, QToolButton, QScrollArea, QSlider, QGraphicsOpacityEffect)
+from PyQt5 import QtGui
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QColor, QIntValidator
+from PyQt5.QtCore import Qt, QSize, QTimer, QEvent, QCoreApplication, QPropertyAnimation
+from datetime import datetime
+from qtconsole.rich_jupyter_widget import RichJupyterWidget
+from attoscience_studio.resources_rc import *
+##----------------------------------------------------
+def read_nex(file_path):
+    try:
+        data = np.loadtxt(file_path)
+        if data.size == 0:
+            raise ValueError("The file is empty.")
+        t = data[:, 1]
+        nex = data[:, 2];nex = nex - nex[0]
+        if nex.size == 0:
+            raise ValueError("No N_ex data found in the file.")
+        return t, nex
+    except Exception as e:
+        raise ValueError(f"Failed to read N_ex data file: {e}")
+##----------------------------------------------------
+def nex_and_plotnex(t, nex, Time_OC, x_axis_unit, plot_settings):
+    plt.figure()
+    bg_color = plot_settings.get("background_color", "white")
+    plt.gcf().patch.set_facecolor(bg_color)
+
+    if x_axis_unit=='Atomic unit':
+        plt.plot(t, nex, linewidth=plot_settings.get("line_thickness", 1.4),color=plot_settings.get("line_color", "black"))
+    else:
+        plt.plot(Time_OC, nex, linewidth=plot_settings.get("line_thickness", 1.4),color=plot_settings.get("line_color", "black"))
+        
+    plt.title(plot_settings.get("graph_title", "Number of excited electrons"))
+    x_label = 'Time [a.u.]' if x_axis_unit == "Atomic unit" else 'Time [o.c.]'
+    plt.xlabel(plot_settings.get("x_label", x_label))
+    plt.ylabel(plot_settings.get("y_label", "Excited electrons"))
+    x_axis = t if x_axis_unit == "Atomic unit" else Time_OC
+    plt.xlim(left=plot_settings.get("x_min", np.min(x_axis)), right=plot_settings.get("x_max", np.max(x_axis)))
+    plt.ylim(bottom=plot_settings.get("y_min", None), top=plot_settings.get("y_max", None))
+
+    plt.grid(False)
+    plt.box(True)
+    plt.show()
+
+##----------------------------------------------------         
+def print_to_console(console: RichJupyterWidget, msg: str):
+    if hasattr(console, "_kernel_client"):
+        console._kernel_client.execute(f"print('''{msg}''')")
+
+def nex_connector(lambda0_nm, x_axis_unit, plot_settings, ipy_console=None):
+    file_path, _ = QFileDialog.getOpenFileName(None, "Select N_ex file")
+    if "n_ex" not in file_path.lower():
+        QMessageBox.warning(None, "File Error", "Please upload the 'n_ex' file.")
+        return        
+    if file_path:
+        try:
+            t, nex = read_nex(file_path)
+
+            w0 = 45.5633 / lambda0_nm
+            T = 2 * np.pi / w0
+            Time_OC = t/T
+
+            nex_and_plotnex(t, nex, Time_OC, x_axis_unit, plot_settings)
+
+            max_Time_OC = np.max(Time_OC)
+            T_SI = T*2.418884326509*1e-17
+            Nex_Max = np.max(nex)
+                
+            timestamp = datetime.now().strftime("[%H:%M:%S]")
+            msg = (
+                f">>> Time                          {timestamp}\n"
+                + "-" * 75 + "\n"
+                + "--                          Number of excited electrons log!                          --\n"
+                + "-" * 75 + "\n"
+                ">>> Nex visualization successfully completed!\n"
+                f">>> File loaded from: {file_path}\n"
+                f">>> T [a.u.]: {T:.12e}\n"
+                f">>> T [second]: {T_SI:.12e}\n"
+                f">>> Max optical cycle: {max_Time_OC}\n"
+                f">>> Max Nex: {Nex_Max}\n"
+                + "-" * 75
+            )
+            print_to_console(ipy_console, msg)
+        
+        except ValueError as e:
+            QMessageBox.warning(None, "Error", str(e))
+            return
+            
+#----------------------------------------------------
+
+previous_values_nex = {}
+class ModernDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Excited electrons")
+        self.setFixedSize(800, 600)
+        self.setStyleSheet(self.get_modern_stylesheet())
+                
+        self.init_ui()
+        self.setup_animations()
+        
+    def get_modern_stylesheet(self):
+        return """
+        QDialog {
+            background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #f8f9fa, stop: 1 #e9ecef);
+            border-radius: 12px;
+        }
+        
+        QGroupBox {
+            font-weight: 600;
+            font-size: 14px;
+            color: #2c3e50;
+            border: 2px solid #e3f2fd;
+            border-radius: 8px;
+            margin: 10px 0;
+            padding-top: 15px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        QGroupBox::title {
+            subcontrol-origin: margin;
+            left: 15px;
+            padding: 0 8px 0 8px;
+            color: #1976d2;
+        }
+        
+        QLineEdit {
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 13px;
+            background: white;
+            selection-background-color: #2196f3;
+        }
+        
+        QLineEdit:focus {
+            border: 2px solid #2196f3;
+            /*box-shadow: 0 0 8px rgba(33, 150, 243, 0.3);*/
+        }
+        
+        QSpinBox, QDoubleSpinBox {
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 8px;
+            background: white;
+            font-size: 13px;
+        }
+        
+        QSpinBox:focus, QDoubleSpinBox:focus {
+            border: 2px solid #2196f3;
+        }
+        
+        QPushButton {
+            background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #2196f3, stop: 1 #1976d2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        QPushButton:hover {
+            background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #42a5f5, stop: 1 #2196f3);
+            /*transform: translateY(-1px);*/
+        }
+        
+        QPushButton:pressed {
+            background: #1565c0;
+        }
+        
+        QCheckBox {
+            font-size: 13px;
+            color: #2c3e50;
+            spacing: 8px;
+        }
+        
+        QCheckBox::indicator {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #bdbdbd;
+            border-radius: 4px;
+            background: white;
+        }
+        
+        QCheckBox::indicator:checked {
+            background: #2196f3;
+            border: 2px solid #2196f3;
+            image: url(:/icons/select_check_box_27dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png); /* !!! */
+        }
+        
+        QLabel {
+            color: #37474f;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        QScrollArea {
+            border: none;
+            background: transparent;
+        }
+        QScrollBar {
+            background: transparent;
+            width: 20px;
+            margin: 0px;
+            border-radius: 10px;
+
+        }
+        """
+
+    def init_ui(self):
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(20, 20, 20, 20)
+        main_layout.setSpacing(20)
+        
+        self.create_header(main_layout)
+        
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        
+        content_widget = QWidget()
+        content_layout = QVBoxLayout(content_widget)
+        
+        self.create_required_section(content_layout)
+        self.create_optional_section(content_layout)
+        
+        scroll_area.setWidget(content_widget)
+        main_layout.addWidget(scroll_area)
+        
+        self.create_button_section(main_layout)
+        
+    def create_header(self, layout):
+        header_layout = QHBoxLayout()
+        
+        icon_label = QLabel()
+        icon = self.style().standardIcon(QStyle.SP_FileDialogContentsView)
+        icon_label.setPixmap(icon.pixmap(32, 32))
+
+        title_layout = QVBoxLayout()
+        title = QLabel("Excited electrons")
+        title.setStyleSheet("font-size: 22px; font-weight: bold; color: #1976d2; margin: 0;")
+
+        subtitle = QLabel("Configure parameters to plot excited electrons over time.")
+        subtitle.setStyleSheet("font-size: 14px; color: #666; margin: 0;")
+
+        title_layout.addWidget(title)
+        title_layout.addWidget(subtitle)
+        title_layout.setSpacing(2)
+
+        header_layout.addWidget(icon_label)
+        header_layout.addLayout(title_layout)
+        header_layout.addStretch()
+
+        layout.addLayout(header_layout)
+        
+        line = QFrame()
+        line.setFrameShape(QFrame.Shape.HLine)
+        line.setStyleSheet("color: #e0e0e0; margin: 10px 0;")
+        layout.addWidget(line)
+    
+    def create_required_section(self, layout):
+        required_group = QGroupBox("Essential Parameters")
+        required_layout = QVBoxLayout()
+        required_layout.setSpacing(20)
+
+        basic_params_group = QGroupBox("Basic Parameters")
+        basic_params_layout = QFormLayout()
+        basic_params_layout.setSpacing(12)
+        basic_params_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+
+        # (1) Driving Wavelength
+        lambda0_container = QWidget()
+        lambda0_layout = QHBoxLayout(lambda0_container)
+        lambda0_layout.setContentsMargins(0, 0, 0, 0)
+    
+        self.lambda0_entry = QLineEdit()
+        self.lambda0_entry.setPlaceholderText("Enter driving wavelength (e.g., 2000)")
+        self.lambda0_entry.setText(str(previous_values_nex.get("lambda0_nm", "")))
+        self.lambda0_entry.setMaxLength(10)
+
+    
+        lambda0_unit_label = QLabel("nm")
+        lambda0_unit_label.setStyleSheet("color: #666; font-style: italic; min-width: 30px;")
+    
+        lambda0_layout.addWidget(self.lambda0_entry)
+        lambda0_layout.addWidget(lambda0_unit_label)
+        
+        basic_params_layout.addRow("Driving Wavelength:", lambda0_container)
+    
+        #------
+        basic_params_group.setLayout(basic_params_layout)
+        required_layout.addWidget(basic_params_group)
+
+        ##- Display Options Section -------------------------------------
+        display_options_group = QGroupBox("Display Options")
+        display_options_layout = QVBoxLayout()
+        display_options_layout.setSpacing(15)
+
+
+        # X-axis unit selection -----------------------------
+        x_axis_subgroup = QGroupBox("X-axis Unit")
+        x_axis_layout = QHBoxLayout()
+        x_axis_layout.setContentsMargins(10, 10, 10, 10)
+    
+        self.x_axis_unit_entry = QComboBox()
+        self.x_axis_unit_entry.addItems(["Atomic unit", "Optical cycle"])
+        self.x_axis_unit_entry.setFixedSize(120, 30)
+        self.x_axis_unit_entry.setStyleSheet("""QComboBox { min-height: 30px;font-size: 12px;}""")
+        
+        x_axis_layout.addWidget(self.x_axis_unit_entry)
+        x_axis_layout.addStretch()
+    
+        x_axis_subgroup.setLayout(x_axis_layout)
+        display_options_layout.addWidget(x_axis_subgroup)
+
+        
+        display_options_group.setLayout(display_options_layout)
+        required_layout.addWidget(display_options_group)
+        ##--------------------------------------------------------
+        required_group.setLayout(required_layout)
+        layout.addWidget(required_group)
+
+    
+    def create_optional_section(self, layout):
+        self.plot_options_checkbox = QCheckBox("Advanced Plot Customization") 
+        self.plot_options_checkbox.setStyleSheet("font-size: 14px; font-weight: 600; color: #1976d2;")
+        layout.addWidget(self.plot_options_checkbox)
+        
+        self.advanced_group = QGroupBox("Plot Appearance Settings")
+        self.advanced_group.setVisible(False)
+
+        tab_widget = QTabWidget()
+        tab_widget.setStyleSheet("""
+            QTabWidget::pane {
+                border: 1px solid #e0e0e0;
+                border-radius: 6px;
+                background: white;
+            }
+            QTabBar::tab {
+                background: #f5f5f5;
+                border: 1px solid #e0e0e0;
+                padding: 8px 16px;
+                margin: 2px;
+                border-radius: 4px;
+            }
+            QTabBar::tab:selected {
+                background: #2196f3;
+                color: white;
+            }
+        """)
+        #############
+        # Axes tab
+        axes_tab = self.create_axes_tab()
+        tab_widget.addTab(axes_tab, QIcon(":/icons/finance_27dp_000000_FILL0_wght400_GRAD0_opsz24.png"), "Axes")
+        tab_widget.setIconSize(QSize(20, 20))
+        #############
+        # Styling tab
+        styling_tab = self.create_styling_tab()
+        tab_widget.addTab(styling_tab, QIcon(":/icons/stylus_note_27dp_000000_FILL0_wght400_GRAD0_opsz24.png"), "Styling")
+        #############
+        # Labels tab 
+        labels_tab = self.create_labels_tab()
+        tab_widget.addTab(labels_tab, QIcon(":/icons/label_27dp_000000_FILL0_wght400_GRAD0_opsz24.png"), "Labels")
+        #############
+        advanced_layout = QVBoxLayout(self.advanced_group)
+        advanced_layout.addWidget(tab_widget)
+        
+        layout.addWidget(self.advanced_group)
+        
+        ##########################
+        self.plot_options_checkbox.stateChanged.connect(self.toggle_advanced_options)
+        ##########################
+        
+    def create_axes_tab(self):
+        axes_widget = QWidget()
+        axes_layout = QFormLayout(axes_widget)
+        axes_layout.setSpacing(12)
+        
+        # X-axis range
+        x_range_widget = QWidget()
+        x_range_layout = QHBoxLayout(x_range_widget)
+        x_range_layout.setContentsMargins(0, 0, 0, 0)
+        
+        self.x_min_entry = QLineEdit()
+        self.x_min_entry.setPlaceholderText("Min")
+        self.x_max_entry = QLineEdit()
+        self.x_max_entry.setPlaceholderText("Max")
+        
+        x_range_layout.addWidget(self.x_min_entry)
+        x_range_layout.addWidget(QLabel("to"))
+        x_range_layout.addWidget(self.x_max_entry)
+        
+        axes_layout.addRow("X-axis Range:", x_range_widget)
+        
+        # Y-axis range
+        y_range_widget = QWidget()
+        y_range_layout = QHBoxLayout(y_range_widget)
+        y_range_layout.setContentsMargins(0, 0, 0, 0)
+        
+        self.y_min_entry = QLineEdit()
+        self.y_min_entry.setPlaceholderText("Min")
+        self.y_max_entry = QLineEdit()
+        self.y_max_entry.setPlaceholderText("Max")
+        
+        y_range_layout.addWidget(self.y_min_entry)
+        y_range_layout.addWidget(QLabel("to"))
+        y_range_layout.addWidget(self.y_max_entry)
+        
+        axes_layout.addRow("Y-axis Range:", y_range_widget)
+        
+        return axes_widget
+    
+    def create_styling_tab(self):
+        styling_widget = QWidget()
+        styling_layout = QFormLayout(styling_widget)
+        styling_layout.setSpacing(12)
+        
+        # Color picker for line color
+        line_color_widget = QWidget()
+        line_color_layout = QHBoxLayout(line_color_widget)
+        line_color_layout.setContentsMargins(0, 0, 0, 0)
+        
+        self.line_color_entry = QLineEdit()
+        self.line_color_entry.setPlaceholderText("e.g., blue, #ff5733")
+        
+        color_picker_btn = QPushButton("🎨")
+        color_picker_btn.setFixedSize(40, 32)
+        color_picker_btn.clicked.connect(self.open_color_picker)
+        
+        line_color_layout.addWidget(self.line_color_entry)
+        line_color_layout.addWidget(color_picker_btn)
+        
+        styling_layout.addRow("Line Color:", line_color_widget)
+        
+        thickness_widget = QWidget()
+        thickness_layout = QHBoxLayout(thickness_widget)
+        thickness_layout.setContentsMargins(0, 0, 0, 0)
+        
+        self.line_thickness_spinbox = QDoubleSpinBox()
+        self.line_thickness_spinbox.setRange(0.1, 10.0)
+        self.line_thickness_spinbox.setValue(1.2)
+        self.line_thickness_spinbox.setSuffix(" px")
+        
+        thickness_slider = QSlider(Qt.Horizontal)
+        thickness_slider.setRange(1, 100)
+        thickness_slider.setValue(12)
+        thickness_slider.valueChanged.connect(lambda v: self.line_thickness_spinbox.setValue(v/10.0))
+        
+        thickness_layout.addWidget(self.line_thickness_spinbox)
+        thickness_layout.addWidget(thickness_slider)
+        
+        styling_layout.addRow("Line Thickness:", thickness_widget)
+        
+        self.background_color_entry = QLineEdit()
+        self.background_color_entry.setPlaceholderText("e.g., white, black, #f0f0f0")
+        styling_layout.addRow("Background Color:", self.background_color_entry)
+        
+        return styling_widget
+    
+    def create_labels_tab(self):
+        labels_widget = QWidget()
+        labels_layout = QFormLayout(labels_widget)
+        labels_layout.setSpacing(12)
+        
+        self.graph_title_entry = QLineEdit()
+        self.graph_title_entry.setPlaceholderText("Enter plot title")
+        labels_layout.addRow("Graph Title:", self.graph_title_entry)
+        
+        self.x_label_entry = QLineEdit()
+        self.x_label_entry.setPlaceholderText("e.g., Harmonic order")
+        labels_layout.addRow("X-axis Label:", self.x_label_entry)
+        
+        self.y_label_entry = QLineEdit()
+        self.y_label_entry.setPlaceholderText("e.g., Intensity [arb.u.]")
+        labels_layout.addRow("Y-axis Label:", self.y_label_entry)
+       
+        return labels_widget
+    
+    def create_button_section(self, layout):
+        button_layout = QHBoxLayout()
+        button_layout.setSpacing(12)
+        
+        # Cancel button
+        cancel_btn = QPushButton("Cancel")
+        cancel_btn.setStyleSheet("""
+            QPushButton {
+                background: #f5f5f5;
+                color: #666;
+                border: 2px solid #e0e0e0;
+            }
+            QPushButton:hover {
+                background: #eeeeee;
+                border: 2px solid #bdbdbd;
+            }
+        """)
+        cancel_btn.clicked.connect(self.reject)
+
+        submit_btn = QPushButton("Generate Plot")
+        submit_btn.setIcon(QIcon(":/icons/analytics_27dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png"))
+        submit_btn.setIconSize(QSize(24, 24))
+        submit_btn.setDefault(True)
+        submit_btn.clicked.connect(self.on_submit)
+        
+        button_layout.addStretch()
+        button_layout.addWidget(cancel_btn)
+        button_layout.addWidget(submit_btn)
+        
+        layout.addLayout(button_layout)
+    
+    ##$$$$$$$$$$$$$$$$$$$$$$$$$
+    def setup_animations(self):
+        self.fade_effect = QGraphicsOpacityEffect()
+        self.advanced_group.setGraphicsEffect(self.fade_effect)
+        
+        self.fade_animation = QPropertyAnimation(self.fade_effect, b"opacity")
+        self.fade_animation.setDuration(0) # No wasting time !
+
+    def toggle_advanced_options(self, state):
+        if state == Qt.Checked:
+            self.advanced_group.setVisible(True)
+            self.fade_animation.stop()
+            try:
+                self.fade_animation.finished.disconnect()
+            except TypeError:
+                pass
+
+            self.fade_animation.setStartValue(0.0)
+            self.fade_animation.setEndValue(1.0)
+            self.fade_animation.start()
+
+        else:
+            self.fade_animation.stop()
+            try:
+                self.fade_animation.finished.disconnect()
+            except TypeError:
+                pass
+
+            self.fade_animation.setStartValue(1.0)
+            self.fade_animation.setEndValue(0.0)
+            self.fade_animation.finished.connect(lambda: self.advanced_group.setVisible(False))
+            self.fade_animation.start()
+
+    ##$$$$
+    def open_color_picker(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self.line_color_entry.setText(color.name())
+    
+    def is_valid_color(self, color):
+        try:
+            mcolors.to_rgba(color)
+            return True
+        except ValueError:
+            return False
+    
+    def on_submit(self):
+        try:
+            lambda0_nm = float(self.lambda0_entry.text())
+            if not (0 <= lambda0_nm <= 10000):
+                raise ValueError("Driving wavelength must be positive and must be less than 10,000 nm.")
+            previous_values_nex["lambda0_nm"] = lambda0_nm
+        
+            x_axis_unit = self.x_axis_unit_entry.currentText()
+  
+            plot_settings = {}
+            if self.plot_options_checkbox.isChecked():
+                
+                line_color = self.line_color_entry.text().strip() or "black"
+                background_color = self.background_color_entry.text().strip() or "white"
+                
+                if not self.is_valid_color(line_color):
+                    raise ValueError(f"Invalid color value: {line_color}")
+                
+                plot_settings = {
+                    "x_min": float(self.x_min_entry.text()) if self.x_min_entry.text() else None,
+                    "x_max": float(self.x_max_entry.text()) if self.x_max_entry.text() else None,
+                    "y_min": float(self.y_min_entry.text()) if self.y_min_entry.text() else None,
+                    "y_max": float(self.y_max_entry.text()) if self.y_max_entry.text() else None,
+                    "graph_title": self.graph_title_entry.text(),
+                    "x_label": self.x_label_entry.text(),
+                    "y_label": self.y_label_entry.text(),
+                    "line_color": line_color,
+                    "line_thickness": self.line_thickness_spinbox.value(),
+                    "background_color": background_color,
+                }
+            ## ----------------------------------------
+
+            self.accept()
+            # Update
+            previous_values_nex.update({"lambda0_nm": lambda0_nm})
+            
+            # CALL
+            nex_connector(lambda0_nm, x_axis_unit, plot_settings, self.parent().ipy_console)
+
+        except ValueError as e:
+            QMessageBox.warning(self, "Invalid Input", f"Error: {e}")
+
+def input_dialog_nex(parent):
+    dialog = ModernDialog(parent)
+    return dialog.exec_()
+
+
