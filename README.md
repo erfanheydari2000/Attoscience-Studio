@@ -239,7 +239,7 @@ We welcome contributions from the scientific community! Here's how you can help:
 
 ```bash
 # Fork the repository on GitHub
-git clone https://github.com/YOUR_USERNAME/attoscience_studio.git
+git clone https://github.com/erfanheydari2000/attoscience_studio.git
 cd attoscience_studio
 
 # Create a development environment
