@@ -52,23 +52,40 @@ Specialized in attosecond pulse generation and high harmonic generation (HHG) fr
 ### High Harmonic Generation Analysis
 - **Time-Domain Total Current Visualization**: Monitor induced currents (jx, jy, jz) during laser-matter interaction
 - **HHG Spectral Analysis**: Fourier transform analysis with both velocity and acceleration forms
-  ```math
-  \mathrm{HHG}(\omega) = \left| \mathcal{F} \left( \frac{\partial}{\partial t} \int_{\Omega} d^3r \, \mathbf{J}(\mathbf{r}, t) \right) \right|^2
-  ```
+```math
+\mathrm{HHG}(\omega) = \left| \mathcal{F} \left( \frac{\partial}{\partial t} \int_{\Omega} d^3r \, \mathbf{J}(\mathbf{r}, t) \right) \right|^2
+```
 - **Harmonic Yield Calculations**: Quantify emission efficiency for specific harmonic orders
+```math
+I_{HO, i}(n) = \left| \int_{\omega_i}^{\omega_f} e^{i \omega t} \, \mathrm{HHG}(\omega) \, d\omega \right|^2
+```
 - **Phase Analysis**: Extract phase information from harmonic components in radians and degrees
 - **Ellipticity Measurements**: Determine circular polarization characteristics of generated harmonics
-- **Cutoff Energy Predictions**: Identify maximum photon energies and plateau structures
+```math
+\varepsilon = \frac{|a_{\text{right}}| - |a_{\text{left}}|}{|a_{\text{right}}| + |a_{\text{left}}|}
+\]
 
+where:
+\[
+a_{\text{right}} = \frac{1}{\sqrt{2}} (F_i + i F_j), \quad a_{\text{left}} = \frac{1}{\sqrt{2}} (F_i - i F_j)
+\]
+
+and \( F_i \) and \( F_j \) are the Fourier components of the harmonic field.
+```
+- **Cutoff Energy Predictions**: Identify maximum photon energies and plateau structures
 ### Attosecond Pulse Generation & Characterization
 - **Attosecond Pulse Intensity**:  
-  \[
-  I(t) = \left| \int_{\omega_i}^{\omega_f} e^{i \omega t} \, \mathrm{HHG}(\omega) \, d\omega \right|^2
-  \]
-  representing the inverse Fourier synthesis of harmonics in the selected frequency range \([\omega_i, \omega_f]\).
-  
+```math
+I(t) = \left| \int_{(n - 1) \omega}^{(n + 1) \omega} \mathrm{HHG}(\omega^\prime) \, d\omega^\prime \right|^2
+```
 - **Minimum Pulse Width (FWHM) Optimization**: Find shortest achievable pulse durations
-- **Gabor Transform Analysis**: G(t, ω) = ∫ j(τ) × g(τ - t) × e^(-iωτ) dτ, where g(t) = exp(-t² / 2σ²)
+- **Gabor Transform Analysis**:
+```math
+G(t, \omega) = \int j(\tau) , g(\tau - t) , e^{-i \omega \tau} , d\tau
+```
+```math
+g(t) = \exp\left(-\frac{t^2}{2\sigma^2}\right)
+```
 
 ### Ultrafast Electron Dynamics
 - **Time-Resolved Excitation Tracking**: Monitor excited electron populations over optical cycles
