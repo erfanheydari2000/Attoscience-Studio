@@ -40,7 +40,7 @@ Specialized in attosecond pulse generation and high harmonic generation (HHG) fr
 
 ### Laser Field Configuration
 - **Single & Dual Pulse Setup**: Configure $E_x$, $E_y$, $E_z$ components for complex field geometries
-- **Vector Potential Analysis**: Time-dependent gauge field calculations ($\mathbf{E}$ = -∂$\mathbf{A}$/∂t) 
+- **Vector Potential Analysis**: Time-dependent gauge field calculations $\mathbf{E} = -\frac{\partial \mathbf{A}}{\partial t}$
 - **Polarization Gating**: Design isolated attosecond pulse generation schemes with precise control over:
   - Laser wavelength, intensity, and optical cycles
   - Ellipticity and rotation angles
