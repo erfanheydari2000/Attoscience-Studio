@@ -153,7 +153,7 @@ g(t) = \exp\left(-\frac{t^2}{2\sigma^2}\right)
 
 ```bash
 # Clone the repository
-git clone https://github.com/erfan-h/attoscience_studio.git
+git clone https://github.com/erfanheydari2000/attoscience_studio.git
 cd attoscience_studio
 
 # Install dependencies and the package
@@ -164,7 +164,7 @@ pip install .
 
 ```bash
 # For developers who want to modify the code
-git clone https://github.com/erfan-h/attoscience_studio.git
+git clone https://github.com/erfanheydari2000/attoscience_studio.git
 cd attoscience_studio
 pip install -e .
 ```
