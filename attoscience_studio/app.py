@@ -388,9 +388,7 @@ class MainWindow(QMainWindow):
         about_text = """
         <h2>Attoscience Studio</h2>
         <p><b>Version:</b> 1.0.0</p>
-        <p><b>Developer:</b> Erfan Heydari</p>
-        <p>This software is designed for attoscience simulations, 
-        offering state-of-the-art tools for scientific research.</p>
+        <p>This software is designed for attoscience simulations.
         <p>For more information, visit: 
         <a href='https://github.com/'>GitHub Repository</a></p>
         """
